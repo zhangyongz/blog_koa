@@ -8,7 +8,14 @@ const {
 } = require('sequelize')
 
 class Article extends Model {
-
+  static async getAll() {
+    var article = await Article.findAll({
+      order: [
+        ['created_at', 'DESC']
+      ]
+    })
+    return article
+  }
 }
 
 Article.init({
