@@ -8,16 +8,19 @@ const {
 } = require('sequelize')
 
 class Tag extends Model {
-
+  static async getAll() {
+    var tag = await Tag.findAll()
+    return tag
+  }
 }
 
 Tag.init({
-  tag_id: {
+  id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  tag_name: Sequelize.STRING
+  name: Sequelize.STRING
 }, {
   sequelize,
   tableName: 'blog_tag'

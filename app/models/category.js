@@ -1,6 +1,4 @@
-const {
-  sequelize
-} = require('../../core/db')
+const { sequelize } = require('../../core/db')
 
 const {
   Sequelize,
@@ -8,11 +6,14 @@ const {
 } = require('sequelize')
 
 class Category extends Model {
-
+  static async getAll() {
+    var category = await Category.findAll()
+    return category
+  }
 }
 
 Category.init({
-  category_id: {
+  id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true
