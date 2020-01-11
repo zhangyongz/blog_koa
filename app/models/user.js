@@ -18,7 +18,14 @@ User.init({
     autoIncrement: true
   },
   username: Sequelize.STRING,
-  password: Sequelize.STRING
+  password: {
+    type: Sequelize.STRING,
+    set(val) {
+      const salt = bcrypt.genSaltSync(10)
+      const psw = bcrypt.hashSync(val, salt)
+      this.setDataValue('password', psw)
+    }
+  }
 }, {
   sequelize,
   tableName: 'blog_user'
