@@ -1,8 +1,8 @@
 const Router = require('koa-router')
+const { sucess } = require('../../../core/http')
 const { Article } = require('../../models/article')
 const { Category } = require('../../models/category')
 const { Tag } = require('../../models/tag')
-const { clone } = require('lodash')
 
 const router = new Router({
   prefix: '/v1/front'
@@ -35,12 +35,9 @@ router.get('/article_list', async (ctx, next) => {
     }
     articleList[i].tag = tagNameArr.join(',')
   }
-  ctx.body = {
-    reCode: 200,
-    result: {
-      articleList
-    }
-  }
+  sucess(ctx, {
+    articleList
+  })
 })
 
 /** 分类列表 */
@@ -53,42 +50,33 @@ router.get('/category_list', async (ctx, next) => {
           category: element.id
        }
     })
-    categoryList[i].count = article.count
+    categoryList[i].dataValues.count = article.count
     // for (let j = 0; j < articleList.length; j++) {
     //   if (element.category_id === articleList[j].category) {
     //     element.count += 1;
     //   }
     // }
   }
-  ctx.body = {
-    reCode: 200,
-    result: {
-      categoryList
-    }
-  }
+  sucess(ctx, {
+    categoryList
+  })
 })
 
 /** 标签列表 */
 router.get('/tag_list', async (ctx, next) => {
   let tag = await Tag.getAll()
-  ctx.body = {
-    reCode: 200,
-    result: {
-      tag
-    }
-  }
+  sucess(ctx, {
+    tag
+  })
 })
 
 /** 文章详情 */
 router.get('/article', async (ctx, next) => {
   let id = ctx.request.query.id
   let detail = await Article.getDetail(ctx)
-  ctx.body = {
-    reCode: 200,
-    result: {
-      detail
-    }
-  }
+  sucess(ctx, {
+    detail
+  })
 })
 
 module.exports = router

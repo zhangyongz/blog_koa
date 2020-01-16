@@ -1,13 +1,13 @@
 const catchError = async (ctx, next) => {
   try {
     await next()
-  } catch (error) {
+  } catch (err) {
     ctx.body = {
-      msg: error,
-      error_code: 201,
+      reInfo: err.message,
+      reCode: err.errerrorCode || 201,
       request: `${ctx.method} ${ctx.path}`
     }
-    ctx.status = 500
+    ctx.status = 200
   }
 }
 
