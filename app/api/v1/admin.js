@@ -1,6 +1,7 @@
 const Router = require('koa-router')
 const { sucess, HttpException } = require('../../../core/http')
 const { User } = require('../../models/user')
+const { Article } = require('../../models/article')
 const { generateToken } = require('../../../core/utils')
 
 const router = new Router({
@@ -50,5 +51,37 @@ router.post('/login', async (ctx, next) => {
   })
 })
 
+/** 上传文章 */
+router.post('/uploadArticle', async (ctx, next) => {
+  let body = ctx.request.body
+  let title = body.title
+  let value = body.value
+  let render = body.render
+  let category = body.category
+  let tag
+  if (body.tag) {
+    tag = body.tag.join(',')
+  }
+  let describle = body.describle
+  let coverImg = body.cover_img
+  if (!title || !value || !render || !category || !tag || !describle || !coverImg) {
+    throw new HttpException({
+      message: '请传必填字段'
+    })
+  }
+  let data = {
+    title: title,
+    value: value,
+    render: render,
+    category: category,
+    tag: tag,
+    describle: describle,
+    cover_img: coverImg
+  }
+  await Article.create(data)
+  sucess(ctx, {
+    data
+  })
+})
 
 module.exports = router

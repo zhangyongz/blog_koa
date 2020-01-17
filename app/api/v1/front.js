@@ -45,10 +45,10 @@ router.get('/category_list', async (ctx, next) => {
   let categoryList = await Category.getAll()
   for (let i = 0; i < categoryList.length; i++) {
     let element = categoryList[i]
-    let article = await Article.findAndCountAll({
-       where: {
-          category: element.id
-       }
+    let article = await Article.getCount({
+      where: {
+        category: element.id
+      }
     })
     categoryList[i].dataValues.count = article.count
     // for (let j = 0; j < articleList.length; j++) {
@@ -77,6 +77,19 @@ router.get('/article', async (ctx, next) => {
   sucess(ctx, {
     detail
   })
+})
+
+/** 数量 */
+router.get('/count', async (ctx, next) => {
+  let article = await Article.getCount()
+  let category = await Category.getCount()
+  let tag = await Tag.getCount()
+  let data = {
+    article: await article.count,
+    category: await category.count,
+    tag: await tag.count
+  }
+  sucess(ctx, data)
 })
 
 module.exports = router

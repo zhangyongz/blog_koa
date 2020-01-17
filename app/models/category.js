@@ -10,6 +10,11 @@ class Category extends Model {
     var category = await Category.findAll()
     return category
   }
+
+  static async getCount() {
+    let category = await Category.findAndCountAll()
+    return category
+  }
 }
 
 Category.init({

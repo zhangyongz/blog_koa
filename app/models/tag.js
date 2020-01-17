@@ -12,6 +12,11 @@ class Tag extends Model {
     var tag = await Tag.findAll()
     return tag
   }
+
+  static async getCount() {
+    let tag = await Tag.findAndCountAll()
+    return tag
+  }
 }
 
 Tag.init({

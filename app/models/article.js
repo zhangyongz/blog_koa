@@ -19,7 +19,12 @@ class Article extends Model {
     return article
   }
 
-  static async getDetail (ctx) {
+  static async getCount(options) {
+    let article = await Article.findAndCountAll(options)
+    return article
+  }
+
+  static async getDetail(ctx) {
     var id = ctx.request.query.id
     var detail = await Article.findOne({
       id
