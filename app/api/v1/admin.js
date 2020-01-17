@@ -84,4 +84,52 @@ router.post('/uploadArticle', async (ctx, next) => {
   })
 })
 
+/** 更新文章 */
+router.post('/updateArticle', async (ctx, next) => {
+  let body = ctx.request.body
+  let id = body.id
+  let title = body.title
+  let value = body.value
+  let render = body.render
+  let category = body.category
+  let tag
+  if (body.tag) {
+    tag = body.tag.join(',')
+  }
+  let describle = body.describle
+  let coverImg = body.cover_img
+  if (!id || !title || !value || !render || !category || !tag || !describle || !coverImg) {
+    throw new HttpException({
+      message: '请传必填字段'
+    })
+  }
+  let article = await Article.count({
+    where: {
+      id
+    }
+  })
+  if (!article) {
+    throw new HttpException({
+      message: '此文章不存在'
+    })
+  }
+  let data = {
+    title: title,
+    value: value,
+    render: render,
+    category: category,
+    tag: tag,
+    describle: describle,
+    cover_img: coverImg
+  }
+  await Article.update(data, {
+    where: {
+      id
+    }
+  })
+  sucess(ctx, {
+    data
+  })
+})
+
 module.exports = router
