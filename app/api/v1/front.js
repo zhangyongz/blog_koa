@@ -81,13 +81,13 @@ router.get('/article', async (ctx, next) => {
 
 /** 数量 */
 router.get('/count', async (ctx, next) => {
-  let article = await Article.getCount()
-  let category = await Category.getCount()
-  let tag = await Tag.getCount()
+  let article = await Article.getAllCount()
+  let category = await Category.getAllCount()
+  let tag = await Tag.getAllCount()
   let data = {
-    article: await article.count,
-    category: await category.count,
-    tag: await tag.count
+    article: await article,
+    category: await category,
+    tag: await tag
   }
   sucess(ctx, data)
 })

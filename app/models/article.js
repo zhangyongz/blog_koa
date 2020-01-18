@@ -19,8 +19,8 @@ class Article extends Model {
     return article
   }
 
-  static async getCount(options) {
-    let article = await Article.findAndCountAll(options)
+  static async getAllCount() {
+    let article = await Article.count()
     return article
   }
 
@@ -30,6 +30,26 @@ class Article extends Model {
       id
     })
     return detail
+  }
+
+  static async getCount(ctx) {
+    let id = ctx.request.body.id
+    let count = await Article.count({
+      where: {
+        id
+      }
+    })
+    return count
+  }
+
+  static async deleteArticle(ctx) {
+    var id = ctx.request.body.id
+    var data = await Article.destroy({
+      where: {
+        id
+      }
+    })
+    return data
   }
 }
 
