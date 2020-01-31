@@ -50,7 +50,8 @@ router.get('/category_list', async (ctx, next) => {
         category: element.id
       }
     })
-    categoryList[i].dataValues.count = article.count
+    article.setDataValue('count', article.count)
+    // categoryList[i].dataValues.count = article.count
     // for (let j = 0; j < articleList.length; j++) {
     //   if (element.category_id === articleList[j].category) {
     //     element.count += 1;

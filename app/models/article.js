@@ -27,7 +27,9 @@ class Article extends Model {
   static async getDetail(ctx) {
     var id = ctx.request.query.id
     var detail = await Article.findOne({
-      id
+      where: {
+        id
+      }
     })
     return detail
   }
