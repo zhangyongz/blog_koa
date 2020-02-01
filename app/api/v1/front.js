@@ -1,8 +1,8 @@
 const Router = require('koa-router')
 const { sucess } = require('../../../core/http')
-const { Article } = require('../../models/article')
-const { Category } = require('../../models/category')
-const { Tag } = require('../../models/tag')
+const { Article } = require('@models/article')
+const { Category } = require('@models/category')
+const { Tag } = require('@models/tag')
 
 const router = new Router({
   prefix: '/v1/front'

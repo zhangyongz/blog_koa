@@ -1,9 +1,9 @@
 const Router = require('koa-router')
 const { sucess, HttpException } = require('../../../core/http')
-const { User } = require('../../models/user')
-const { Article } = require('../../models/article')
-const { Category } = require('../../models/category')
-const { Tag } = require('../../models/tag')
+const { User } = require('@models/user')
+const { Article } = require('@models/article')
+const { Category } = require('@models/category')
+const { Tag } = require('@models/tag')
 const { generateToken } = require('../../../core/utils')
 const { Auth } = require('../../../middlewares/auth')
 
