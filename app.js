@@ -4,6 +4,7 @@ const parser = require('koa-bodyparser')
 const path = require('path')
 const InitManager = require('./core/init')
 const catchError = require('./middlewares/exception')
+const cors = require('./middlewares/cors')
 const static = require('koa-static')
 require('@models/article')
 require('@models/category')
@@ -12,8 +13,9 @@ require('@models/user')
 
 const app = new Koa()
 app.use(catchError)
+app.use(cors)
 app.use(parser())
-app.use(static(path.join(__dirname,'./static')))
+app.use(static(path.join(__dirname, './static')))
 
 InitManager.initCore(app)
 

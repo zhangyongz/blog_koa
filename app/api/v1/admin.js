@@ -6,6 +6,7 @@ const { Category } = require('@models/category')
 const { Tag } = require('@models/tag')
 const { generateToken } = require('../../../core/utils')
 const { Auth } = require('../../../middlewares/auth')
+const upload = require('../../../middlewares/upload')
 
 const router = new Router({
   prefix: '/v1/admin'
@@ -201,6 +202,14 @@ router.post('/editTag', new Auth().m, async (ctx, next) => {
   }
   let data = await Tag.updateTag(ctx)
   sucess(ctx, data)
+})
+
+/** 上传图片 */
+router.post('/uploadImg', new Auth().m, upload.single('file'), async (ctx, next) => {
+  let file = ctx.req.file
+  sucess(ctx, {
+    path: file.path.slice(7)
+  })
 })
 
 module.exports = router

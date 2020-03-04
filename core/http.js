@@ -7,7 +7,7 @@ function sucess(ctx, result={}, reInfo='操作成功') {
 }
 
 class HttpException extends Error {
-  constructor(message = '服务器异常', errorCode = 201) {
+  constructor({message = '服务器异常', errorCode = 201}) {
     super()
     this.message = message
     this.errorCode = errorCode

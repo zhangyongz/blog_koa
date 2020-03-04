@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const moment = require('moment')
 
 const generateToken = function(uid, scope){
   const secretKey = global.config.security.secretKey
@@ -12,6 +13,14 @@ const generateToken = function(uid, scope){
   return token
 }
 
+const formatDateforList = function (list) {
+  for (let i = 0; i < list.length; i++) {
+    list[i].dataValues.created_at = moment(list[i].created_at).format('YYYY-MM-DD')
+  }
+  return list
+}
+
 module.exports = {
-  generateToken
+  generateToken,
+  formatDateforList
 }

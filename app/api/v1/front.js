@@ -1,10 +1,11 @@
 const Router = require('koa-router')
-const { sequelize } = require('../../../core/db')
-const { sucess } = require('../../../core/http')
+const { sequelize } = require('@core/db')
+const { sucess } = require('@core/http')
 const { Article } = require('@models/article')
 const { Category } = require('@models/category')
 const { Tag } = require('@models/tag')
 const moment = require('moment')
+const { formatDateforList } = require('@core/utils')
 
 const router = new Router({
   prefix: '/v1/front'
@@ -12,7 +13,9 @@ const router = new Router({
 
 /** 文章列表 */
 router.get('/articleList', async (ctx, next) => {
-  let articleList = await Article.getAll(ctx)
+  let data = await Article.getAll(ctx)
+  let articleList = data.article
+  let count = data.count
   let categoryList = await Category.getAll()
   // 添加分类
   for (let i = 0; i < categoryList.length; i++) {
@@ -38,7 +41,9 @@ router.get('/articleList', async (ctx, next) => {
     articleList[i].tag = tagNameArr.join(',')
   }
   sucess(ctx, {
-    articleList
+    articleList,
+    count,
+    pageSize: 10
   })
 })
 
@@ -47,18 +52,12 @@ router.get('/categoryList', async (ctx, next) => {
   let categoryList = await Category.getAll()
   for (let i = 0; i < categoryList.length; i++) {
     let element = categoryList[i]
-    let article = await Article.getCount({
+    let article = await Article.count({
       where: {
         category: element.id
       }
     })
-    article.setDataValue('count', article.count)
-    // categoryList[i].dataValues.count = article.count
-    // for (let j = 0; j < articleList.length; j++) {
-    //   if (element.category_id === articleList[j].category) {
-    //     element.count += 1;
-    //   }
-    // }
+    categoryList[i].setDataValue('count', article)
   }
   sucess(ctx, {
     categoryList
@@ -133,7 +132,7 @@ router.get('/articleListByCategory', async (ctx, next) => {
   })
   let data = {
     name: category.name,
-    list: articleList
+    list: formatDateforList(articleList)
   };
   sucess(ctx, data)
 })
@@ -158,7 +157,7 @@ router.get('/articleListByTag', async (ctx, next) => {
   })
   let data = {
     name: tag.name,
-    list: articleList
+    list: formatDateforList(articleList)
   };
   sucess(ctx, data)
 })
@@ -183,6 +182,7 @@ router.get('/articleListByDate', async (ctx, next) => {
     for (let j = 0; j < articleList.length; j++) {
       if (moment(articleList[j].created_at).format('YYYY-MM') === groupList[i].time) {
         groupList[i].children.push(articleList[j])
+        articleList[j].dataValues.created_at = moment(articleList[j].created_at).format('YYYY-MM-DD')
       }
     }
   }

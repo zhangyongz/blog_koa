@@ -1,22 +1,23 @@
-const {
-  sequelize
-} = require('../../core/db')
-
-const {
-  Sequelize,
-  Model
-} = require('sequelize')
+const { sequelize } = require('@core/db')
+const { Sequelize, Model } = require('sequelize')
+const { formatDateforList } = require('@core/utils')
 
 class Article extends Model {
   static async getAll(ctx) {
     var page = ctx.request.query.page || 1
+    // 列表数据
     var article = await Article.findAll({
       order: [
         ['created_at', 'DESC']
       ],
       offset: 10 * (page - 1), limit: 10
     })
-    return article
+    // 分页数据
+    let count = await Article.count()
+    return {
+      article: formatDateforList(article),
+      count
+    }
   }
 
   static async getAllCount() {
