@@ -19,10 +19,10 @@ router.get('/articleList', async (ctx, next) => {
   let categoryList = await Category.getAll()
   // 添加分类
   for (let i = 0; i < categoryList.length; i++) {
-    let element = categoryList[i];
+    let element = categoryList[i]
     for (let j = 0; j < articleList.length; j++) {
       if (element.id === articleList[j].category) {
-        articleList[j].category = element.name;
+        articleList[j].dataValues.category_name = element.name
       }
     }
   }
@@ -168,7 +168,7 @@ router.get('/articleListByDate', async (ctx, next) => {
   let articleList = await Article.findAll()
   // 查询时间分组各项
   let group = await sequelize.query(
-    'SELECT created_at FROM blog_article GROUP BY DATE_FORMAT(created_at, "%m-%Y")')
+    'SELECT created_at FROM blog_article GROUP BY DATE_FORMAT(created_at, "%m-%Y") ORDER BY created_at ASC')
   group = group[0]
   // 循环各项添加文章列表
   let groupList = [];
