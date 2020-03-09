@@ -86,6 +86,7 @@ router.get('/tagList', async (ctx, next) => {
 router.get('/article', async (ctx, next) => {
   let id = ctx.request.query.id
   let detail = await Article.getDetail(ctx)
+  detail.dataValues.created_at = moment(detail.created_at).format('YYYY-MM-DD HH:mm:ss')
   let tagList = await Tag.getAll()
   let tagArr = detail.tag.split(',')
   let tagNameArr = []
