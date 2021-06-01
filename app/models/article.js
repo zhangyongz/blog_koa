@@ -68,7 +68,8 @@ Article.init({
   describle: Sequelize.STRING,
   category: Sequelize.INTEGER,
   tag: Sequelize.STRING,
-  cover_img: Sequelize.STRING
+  cover_img: Sequelize.STRING,
+  is_del: Sequelize.INTEGER
 }, {
   sequelize,
   tableName: 'blog_article'
